@@ -13,10 +13,11 @@ public class TimeConverterImpl implements TimeConverter {
      */
     @Override
     public String convertTime(String aTime) {
+        aTime = aTime != null ? aTime.trim() : aTime;
+        validateTime(aTime);
+
         StringBuilder berlinClockBuilder = new StringBuilder();
         String[] timeArr = aTime.split(":");
-
-        validateTime(timeArr);
 
         convertSecondForBoard(timeArr[2], berlinClockBuilder);
         convertHoursForBoard(timeArr[0], berlinClockBuilder);
@@ -82,9 +83,14 @@ public class TimeConverterImpl implements TimeConverter {
     /**
      * function to validate input time
      *
-     * @param timeArr
+     * @param inputTimeStr
      */
-    private void validateTime(String[] timeArr) {
+    private void validateTime(String inputTimeStr) {
+        if ("" == inputTimeStr || inputTimeStr == null) {
+            throw new InvalidTimeException(AppConstants.INVALID_TIME_ERROR);
+        }
+
+        String[] timeArr = inputTimeStr.split(":");
         if (timeArr.length != 3) {
             throw new InvalidTimeException(AppConstants.INVALID_TIME_FORMAT_ERROR);
         }

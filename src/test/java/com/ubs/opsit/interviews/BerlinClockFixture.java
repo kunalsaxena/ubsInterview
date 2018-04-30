@@ -38,38 +38,58 @@ public class BerlinClockFixture {
     // custom test cases ====>>>>
 
     /**
-     *  Test for Invalid time format
+     * Test for Invalid time format
      */
     @Test(expected = InvalidTimeException.class)
-    public void testInvalidTimeFormat(){
+    public void testInvalidTimeFormat() {
         String invalidTimeStr = "12:12";
-        berlinClock.convertTime(invalidTimeStr);
+        assertThat(berlinClock.convertTime(invalidTimeStr)).hasSameClassAs(InvalidTimeException.class);
     }
 
     /**
      * Test for not a time value input
      */
     @Test(expected = InvalidTimeException.class)
-    public void testNotATimeValue(){
+    public void testNotATimeValue() {
         String invalidTimeStr = "abcd";
-        berlinClock.convertTime(invalidTimeStr);
+        assertThat(berlinClock.convertTime(invalidTimeStr)).hasSameClassAs(InvalidTimeException.class);
     }
 
     /**
      * Test for blank time input value
      */
     @Test(expected = InvalidTimeException.class)
-    public void testBlankTimeValue(){
+    public void testBlankTimeValue() {
         String invalidTimeStr = "";
-        berlinClock.convertTime(invalidTimeStr);
+        assertThat(berlinClock.convertTime(invalidTimeStr)).hasSameClassAs(InvalidTimeException.class);
     }
 
     /**
      * Test for invalid time input
      */
     @Test(expected = InvalidTimeException.class)
-    public void testInvalidTime(){
+    public void testInvalidTime() {
         String invalidTimeStr = "22:62:60";
-        berlinClock.convertTime(invalidTimeStr);
+        assertThat(berlinClock.convertTime(invalidTimeStr)).hasSameClassAs(InvalidTimeException.class);
     }
+
+    /**
+     * Test for null time input
+     */
+    @Test(expected = InvalidTimeException.class)
+    public void testNullTimeValue() {
+        String invalidTimeStr = null;
+        assertThat(berlinClock.convertTime(invalidTimeStr)).hasSameClassAs(InvalidTimeException.class);
+    }
+
+    /**
+     * Test for time input with spaces
+     */
+    @Test
+    public void testTimeValueWithSpaces() {
+        String invalidTimeStr = " 00:00:00 ";
+        String expetcedValue = "Y\n" + "OOOO\n" + "OOOO\n" + "OOOOOOOOOOO\n" + "OOOO";
+        assertThat(berlinClock.convertTime(invalidTimeStr)).isEqualTo(expetcedValue);
+    }
+
 }
